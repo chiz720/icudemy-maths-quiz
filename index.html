@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Twenty FRCA-style single-best-answer questions on the ICUDemy series The Maths of Anaesthesia & Critical Care.">
+<title>Maths of Anaesthesia SBA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,650&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+body{margin:0}
+[hidden]{display:none!important}
+img{max-width:100%}
+
+/* Layout: one reading column of question sheets under a sticky score strip, like a marked exam paper. */
+:root {
+  --bg: #f6f4f1;
+  --sheet: #ffffff;
+  --ink: #1d2423;
+  --muted: #5d6866;
+  --rule: #dcd8d2;
+  --brand: #c4673e;      /* ICUDemy salmon, deepened for light ground */
+  --teal: #2f7f7a;       /* ICUDemy teal */
+  --right: #2f7a3e;
+  --right-bg: #e7f3e8;
+  --wrong: #b23b2f;
+  --wrong-bg: #f8e6e3;
+  --chosen-bg: #e9f2f1;
+  --font-display: "Literata", Georgia, "Times New Roman", serif;
+  --font-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d0f0f; --sheet: #161a1a; --ink: #e9ecea; --muted: #9aa5a2; --rule: #2a3130;
+    --brand: #e8956a; --teal: #5cb8b2; --right: #7abf7e; --right-bg: #1b2a1d; --wrong: #e0786c;
+    --wrong-bg: #2e1b19; --chosen-bg: #16292a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d0f0f; --sheet: #161a1a; --ink: #e9ecea; --muted: #9aa5a2; --rule: #2a3130;
+  --brand: #e8956a; --teal: #5cb8b2; --right: #7abf7e; --right-bg: #1b2a1d; --wrong: #e0786c;
+  --wrong-bg: #2e1b19; --chosen-bg: #16292a; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 1rem; line-height: 1.55; }
+.wrap { max-width: 46rem; margin: 0 auto; padding-inline: 16px; padding-block: 2rem 4rem; }
+header.masthead { display: grid; gap: .4rem; margin-bottom: 1.5rem; }
+.eyebrow { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--teal); }
+h1 { font-family: var(--font-display); font-weight: 650; font-size: clamp(1.7rem, 4vw, 2.3rem); line-height: 1.15; margin: 0; text-wrap: balance; }
+.lede { color: var(--muted); margin: 0; max-width: 60ch; }
+
+.strip { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: .75rem; border-bottom: 1px solid var(--rule); margin-bottom: 1.25rem; display: grid; gap: .6rem; }
+.strip-row { display: flex; flex-wrap: wrap; gap: .6rem 1rem; align-items: center; justify-content: space-between; }
+.score { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: .95rem; }
+.score b { color: var(--brand); font-size: 1.15rem; }
+.bar { height: 6px; background: var(--rule); border-radius: 3px; overflow: hidden; }
+.bar > span { display: block; height: 100%; width: 0; background: var(--teal); transition: width .3s ease; }
+.controls { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+.seg button { border: 0; background: transparent; color: var(--ink); font: inherit; font-size: .85rem; padding: .35rem .7rem; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--teal); color: var(--sheet); }
+select, .btn { font: inherit; font-size: .85rem; color: var(--ink); background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: .35rem .6rem; cursor: pointer; }
+.btn.primary { background: var(--brand); color: var(--sheet); border-color: var(--brand); font-weight: 700; }
+.btn:disabled { opacity: .5; cursor: default; }
+button:focus-visible, select:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+ol.qs { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.25rem; }
+.q { background: var(--sheet); border: 1px solid var(--rule); border-radius: 8px; padding: 1.1rem 1.1rem 1rem; display: grid; gap: .8rem; min-width: 0; }
+.q-head { display: flex; gap: .75rem; align-items: baseline; flex-wrap: wrap; }
+.q-num { font-family: var(--font-mono); font-size: .8rem; color: var(--brand); font-variant-numeric: tabular-nums; }
+.q-sec { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.q-mark { margin-left: auto; font-family: var(--font-mono); font-size: .75rem; padding: .1rem .5rem; border-radius: 999px; }
+.q-mark.right { color: var(--right); background: var(--right-bg); }
+.q-mark.wrong { color: var(--wrong); background: var(--wrong-bg); }
+.stem { font-family: var(--font-display); font-weight: 500; font-size: 1.08rem; line-height: 1.45; margin: 0; }
+.opts { display: grid; gap: .45rem; }
+.opt { display: grid; grid-template-columns: 2rem 1fr; gap: .5rem; align-items: start; text-align: left; width: 100%; font: inherit; color: var(--ink); background: transparent; border: 1px solid var(--rule); border-radius: 6px; padding: .55rem .7rem; cursor: pointer; }
+.opt:hover:not(:disabled) { border-color: var(--teal); }
+.opt .L { font-family: var(--font-mono); color: var(--muted); }
+.opt[aria-pressed="true"] { background: var(--chosen-bg); border-color: var(--teal); }
+.opt.is-right { background: var(--right-bg); border-color: var(--right); }
+.opt.is-right .L { color: var(--right); }
+.opt.is-wrong { background: var(--wrong-bg); border-color: var(--wrong); }
+.opt.is-wrong .L { color: var(--wrong); }
+.opt:disabled { cursor: default; }
+.explain { border-top: 1px dashed var(--rule); padding-top: .7rem; font-size: .95rem; color: var(--ink); }
+.explain strong { color: var(--teal); }
+.summary { background: var(--sheet); border: 1px solid var(--brand); border-radius: 8px; padding: 1rem 1.1rem; margin-bottom: 1.25rem; display: grid; gap: .4rem; }
+.summary h2 { font-family: var(--font-display); font-size: 1.3rem; margin: 0; }
+.summary ul { margin: 0; padding-left: 1.1rem; color: var(--muted); font-size: .92rem; }
+footer { margin-top: 2rem; color: var(--muted); font-size: .85rem; }
+@media (prefers-reduced-motion: reduce) { .bar > span { transition: none; } }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="eyebrow">ICUDemy · FRCA-style single best answer</div>
+    <h1>The Maths of Anaesthesia &amp; Critical Care</h1>
+    <p class="lede">Twenty questions across the thirteen videos: functions, slope, exponentials, logs, calculus, sigmoids, compartments, Bayes, feedback and hyperbolas. Choose one answer per question.</p>
+  </header>
+
+  <div class="strip" aria-live="polite">
+    <div class="strip-row">
+      <div class="score" id="score">Answered <b id="answered">0</b>/20 · Correct <b id="correct">0</b></div>
+      <div class="controls">
+        <div class="seg" role="group" aria-label="Marking mode">
+          <button type="button" id="mode-practice" aria-pressed="true">Practice</button>
+          <button type="button" id="mode-exam" aria-pressed="false">Exam</button>
+        </div>
+        <select id="filter" aria-label="Show questions from">
+          <option value="all">All videos</option>
+        </select>
+        <button type="button" class="btn" id="reset">Start again</button>
+      </div>
+    </div>
+    <div class="bar" aria-hidden="true"><span id="bar"></span></div>
+  </div>
+
+  <section class="summary" id="summary" hidden>
+    <h2 id="summary-title"></h2>
+    <ul id="summary-list"></ul>
+  </section>
+
+  <ol class="qs" id="qs"></ol>
+
+  <div class="strip-row" style="margin-top:1.25rem">
+    <span class="score" id="exam-hint" hidden>Exam mode: answers are marked when you submit.</span>
+    <button type="button" class="btn primary" id="submit" hidden>Submit and mark</button>
+  </div>
+
+  <footer>Questions based on the ICUDemy series “The Maths of Anaesthesia &amp; Critical Care”. Values are illustrative teaching figures; check local guidance before clinical use.</footer>
+</div>
+
+<script>
+const QUESTIONS = [{"section": "V1 — Functions", "stem": "Two patients each have a 30 mmHg fall in PaO2. Patient A falls from 100 to 70 mmHg; patient B from 60 to 30 mmHg. Patient B's SpO2 falls far more. Which statement BEST explains this?", "options": ["Pulse oximetry is inaccurate below a saturation of 90%", "Patient B started nearer the steep portion of the sigmoid oxyhaemoglobin dissociation curve, where SpO2 changes most per mmHg", "Patient B must have a left-shifted dissociation curve", "Haemoglobin concentration determines SpO2, and must be lower in patient B", "The dissociation curve is linear between 30 and 100 mmHg"], "answer": "B", "explanation": "The ODC is a function whose slope varies along its length. The same change in input (ΔPaO2 = 30 mmHg) produces a small change in output on the flat shoulder (98→94%) but a large one on the steep part (91→57%). A left shift would protect saturation, and SpO2 is independent of Hb concentration."}, {"section": "V2 — Lines & slope", "stem": "A ventilated adult receives a tidal volume of 500 mL. Plateau pressure is 30 cmH2O and PEEP is 5 cmH2O. What is the static respiratory system compliance?", "options": ["100 mL/cmH2O", "50 mL/cmH2O", "25 mL/cmH2O", "20 mL/cmH2O", "16.7 mL/cmH2O"], "answer": "D", "explanation": "Static compliance is the slope (rise ÷ run) of the pressure–volume line: VT ÷ (Pplat − PEEP) = 500 ÷ 25 = 20 mL/cmH2O. Dividing by Pplat alone (16.7) ignores the intercept at PEEP, a common error."}, {"section": "V3 — Exponentials", "stem": "A drug follows single-compartment, first-order elimination. After how many half-lives does the plasma concentration first fall below 5% of its initial value?", "options": ["3", "4", "5", "7", "10"], "answer": "C", "explanation": "Each half-life multiplies the concentration by ½: after 4 half-lives 6.25% remains, after 5 half-lives 3.125%. The exponential never reaches zero, but after 4–5 half-lives it is clinically 'gone'."}, {"section": "V3 — Exponentials", "stem": "During passive exhalation, a patient has airway resistance 20 cmH2O/L/s and respiratory system compliance 0.05 L/cmH2O. Approximately what fraction of the tidal volume remains in the lungs 3 seconds after expiration begins?", "options": ["0%", "5%", "14%", "37%", "63%"], "answer": "B", "explanation": "τ = R × C = 20 × 0.05 = 1 s. Passive exhalation is a wash-out, V = VT·e^(−t/τ). At t = 3 s (3τ), e^(−3) ≈ 0.05, so about 5% remains. If expiratory time is shorter than ~3–5τ, gas is trapped."}, {"section": "V3 — Exponentials", "stem": "A patient with an FRC of 2.5 L and alveolar ventilation of 4 L/min breathes 100% oxygen through a tight-fitting mask. Treating denitrogenation as a wash-in with time constant FRC/VA, how long does it take to reach approximately 95% of the final alveolar oxygen fraction?", "options": ["8 minutes", "3 minutes", "75 seconds", "40 seconds", "2 minutes"], "answer": "E", "explanation": "τ = FRC/VA = 2.5/4 = 0.625 min (≈ 38 s). A wash-in reaches 63% at 1τ, 95% at 3τ (≈ 1.9 min) and >99% at 5τ (≈ 3 min), which is why 3 minutes of tidal breathing is the standard. Longer breathing adds little because the curve has already flattened."}, {"section": "V4 — Logarithms", "stem": "An arterial pH falls from 7.40 to 7.10. What happens to the hydrogen ion concentration?", "options": ["It approximately doubles", "It rises by 0.3 nmol/L", "It rises by about 30%", "It approximately triples", "It rises about tenfold"], "answer": "A", "explanation": "pH = −log10[H+]. A fall of 0.3 pH units is an increase of 0.3 in log[H+], and log10 2 ≈ 0.301, so [H+] doubles: 40 → 80 nmol/L. Logs turn multiplying into adding."}, {"section": "V4 — Logarithms", "stem": "A patient has an acute respiratory acidosis with PaCO2 80 mmHg (10.7 kPa) and plasma bicarbonate 24 mmol/L before any compensation. Using pKa 6.1 and CO2 solubility 0.03 mmol/L/mmHg, what is the pH?", "options": ["6.80", "7.00", "7.10", "7.20", "7.30"], "answer": "C", "explanation": "Henderson–Hasselbalch: pH = 6.1 + log(24 ÷ (0.03 × 80)) = 6.1 + log(24 ÷ 2.4) = 6.1 + log 10 = 7.10. Only the ratio matters: doubling PaCO2 halves the ratio from 20 to 10 and lowers pH by 0.3."}, {"section": "V5 — The derivative", "stem": "Plateau pressure is measured during an end-inspiratory hold. The main reason this pressure reflects elastic recoil (plus PEEP) is that during the hold:", "options": ["Flow is maximal, so resistive pressure is maximal", "Lung volume returns to FRC", "Compliance becomes momentarily infinite", "Flow, the derivative of volume with respect to time, is zero, so no pressure is lost across airway resistance", "PEEP is temporarily removed"], "answer": "D", "explanation": "Equation of motion: Paw = R·(dV/dt) + V/C + PEEP. During the hold, volume is constant, so dV/dt (flow) = 0 and the resistive term vanishes, leaving Pplat = V/C + PEEP. Peak − plateau pressure therefore reflects airway resistance."}, {"section": "V5 — The derivative", "stem": "On the oxyhaemoglobin dissociation curve, at approximately which PaO2 is the slope dSpO2/dPaO2 greatest?", "options": ["20–30 mmHg (2.7–4 kPa)", "40–50 mmHg (5.3–6.7 kPa)", "60 mmHg (8 kPa)", "100 mmHg (13.3 kPa)", "300 mmHg (40 kPa)"], "answer": "A", "explanation": "Plotting the derivative of the ODC gives a bell shape that peaks at about 2.7% per mmHg near 20–25 mmHg, close to P50. At 100 mmHg the slope is only about 0.07% per mmHg, which is why SpO2 is a late sign of falling PaO2 in a patient breathing supplemental oxygen."}, {"section": "V6 — The integral", "stem": "After an intravenous bolus of a drug with first-order elimination, the total area under the plasma concentration–time curve (from zero to infinity) is equal to:", "options": ["Dose × clearance", "Volume of distribution ÷ clearance", "Dose ÷ volume of distribution", "Clearance ÷ dose", "Dose ÷ clearance"], "answer": "E", "explanation": "AUC = ∫C dt = C0/k = (Dose/Vd) ÷ (CL/Vd) = Dose/CL. AUC measures total exposure, so halving clearance (for example in renal failure) doubles exposure for the same dose."}, {"section": "V6 — The integral", "stem": "Cardiac output is measured by thermodilution with the same cold injectate in two patients. Compared with a patient with a high cardiac output, a patient with a low cardiac output will show:", "options": ["A smaller area under the temperature–time curve", "A larger area under the temperature–time curve", "An identical area with a later peak", "A curve whose area is independent of cardiac output", "A negative area under the curve"], "answer": "B", "explanation": "Stewart–Hamilton: CO = amount of indicator ÷ ∫ΔT dt. Cardiac output is inversely proportional to the area: at low output the cold bolus lingers, giving a bigger, wider dip."}, {"section": "V7 — Differential equations", "stem": "A drug with linear (first-order) kinetics is given by constant-rate infusion. If the infusion rate is doubled from the start, what happens?", "options": ["The time to reach steady state halves", "Both the steady-state concentration and the time to reach it double", "The steady-state concentration is unchanged", "The steady-state concentration doubles, but the time to reach it is unchanged", "The steady-state concentration quadruples"], "answer": "D", "explanation": "dC/dt = R/V − kC. Setting dC/dt = 0 gives Css = infusion rate ÷ clearance, which is proportional to rate. The approach to steady state is a wash-in governed only by k, so it takes ~4–5 half-lives whatever the rate. A loading dose, not a faster rate, shortens the delay."}, {"section": "V8 — The sigmoid", "stem": "Sevoflurane has a MAC of about 2% in a middle-aged adult. At about 1.3 MAC, 95% of patients do not move at skin incision. This small dose increase from 50% to 95% response is best explained by:", "options": ["A high oil:gas partition coefficient", "A low blood:gas partition coefficient", "MAC being measured in 100% oxygen", "An additive interaction with nitrous oxide", "A steep population concentration–response curve (high Hill coefficient)"], "answer": "E", "explanation": "MAC is the EC50 of the population quantal response curve. If 1.3 × EC50 gives 95%, then 1.3ⁿ = 19 and n ≈ 11: a very steep sigmoid. Partition coefficients determine potency and speed of onset, not the steepness of the curve."}, {"section": "V8 — The sigmoid", "stem": "The sigmoid shape of the oxyhaemoglobin dissociation curve is best explained by:", "options": ["The Bohr effect", "Cooperative binding of oxygen at haemoglobin's four haem sites, with a Hill coefficient of about 2.7", "Red cell 2,3-diphosphoglycerate", "The contribution of dissolved oxygen", "The Haldane effect"], "answer": "B", "explanation": "The Hill equation S = PO2ⁿ/(P50ⁿ + PO2ⁿ) with n ≈ 2.7 describes the ODC. Binding of one O2 increases the affinity of the remaining sites (cooperativity), giving the steep middle. The Bohr effect and 2,3-DPG shift the curve (change P50) rather than create its shape."}, {"section": "V9 — Sums of exponentials", "stem": "After an 8-hour infusion of each of the following, which drug has the SHORTEST context-sensitive half-time?", "options": ["Fentanyl", "Propofol", "Thiopental", "Remifentanil", "Midazolam"], "answer": "D", "explanation": "Remifentanil is hydrolysed by non-specific esterases in blood and tissues, so its context-sensitive half-time stays at about 3–4 min regardless of infusion duration. Drugs that accumulate in a large peripheral compartment (fentanyl, thiopental, midazolam) show CSHTs that grow markedly with infusion time."}, {"section": "V10 — Several variables", "stem": "A septic patient has Hb 100 g/L, SaO2 97%, PaO2 100 mmHg and cardiac output 4 L/min. Which single intervention would produce the LARGEST increase in oxygen delivery?", "options": ["Increase FiO2 so that SaO2 rises to 100%", "Increase PaO2 from 100 to 300 mmHg", "Increase cardiac output to 5 L/min", "Transfuse to Hb 115 g/L", "Increase cardiac output by 10% with an inotrope"], "answer": "C", "explanation": "DO2 = CO × CaO2, with CaO2 ≈ 1.34 × Hb × SaO2 + 0.03 × PaO2. For a product, percentage changes add: CO 4→5 L/min is +25%; Hb 100→115 is +15%; SaO2 97→100% is about +3%; extra dissolved O2 from PaO2 300 adds about 6 mL/L (≈ +4%); a 10% CO rise is +10%."}, {"section": "V11 — Probability", "stem": "A test has a sensitivity of 90% and a specificity of 90%. The pre-test probability of disease is 10%. What is the probability of disease given a positive result?", "options": ["10%", "50%", "82%", "90%", "99%"], "answer": "B", "explanation": "Natural frequencies: of 1000 patients, 100 have the disease and 90 test positive; of 900 healthy patients, 90 test falsely positive. 90 ÷ 180 = 50%. Equivalently, LR+ = 0.9/0.1 = 9; pre-test odds 1:9 × 9 = 1:1, which is 50%."}, {"section": "V12 — Feedback", "stem": "Which of the following operates as a closed-loop (feedback) control system?", "options": ["Target-controlled infusion of propofol using a pharmacokinetic model", "Volume-controlled ventilation with fixed tidal volume and rate", "A plenum vaporiser set to 2%", "A syringe driver at a fixed rate", "Adaptive support ventilation"], "answer": "E", "explanation": "A closed loop measures the output and corrects the input. ASV measures respiratory mechanics (including the expiratory time constant) breath by breath and adjusts inspiratory pressure and rate towards a target. TCI predicts concentration from a population model but never measures the patient, so it is open-loop."}, {"section": "V13 — The hyperbola", "stem": "A patient has PaCO2 5.3 kPa (40 mmHg) with alveolar ventilation 4.2 L/min. After an opioid, alveolar ventilation falls to 3.0 L/min while CO2 production is unchanged. What is the new steady-state PaCO2?", "options": ["5.7 kPa (43 mmHg)", "6.4 kPa (48 mmHg)", "7.1 kPa (53 mmHg)", "7.5 kPa (56 mmHg)", "10.7 kPa (80 mmHg)"], "answer": "D", "explanation": "PaCO2 = 0.863 × VCO2/VA is a rectangular hyperbola, so PaCO2 × VA is constant: 40 × 4.2/3.0 = 56 mmHg (7.5 kPa). The curve is steep at low VA, so small falls in ventilation cause large rises in PaCO2."}, {"section": "V13 — The hyperbola", "stem": "A patient's phenytoin dose is increased from 300 to 350 mg/day. The steady-state plasma level rises from 15 to 30 mg/L. Which BEST explains this disproportionate rise?", "options": ["Saturation of hepatic metabolism, so elimination approaches zero-order (Michaelis–Menten) kinetics", "Enzyme induction by phenytoin", "Increased oral bioavailability at higher doses", "Reduced plasma protein binding", "First-order elimination with a very long half-life"], "answer": "A", "explanation": "Elimination follows rate = Vmax·C/(Km + C), a saturating hyperbola. Near Vmax the curve is flat, so the steady-state level Css = Km·D/(Vmax − D) climbs steeply: a ~17% dose increase can double the level. Enzyme induction would lower levels; first-order kinetics would give a proportional (~17%) rise."}];
+const KEY = "icudemy-maths-sba-v1";
+let state = { mode: "practice", answers: {}, submitted: false, filter: "all" };
+try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); if (s && typeof s === "object") state = Object.assign(state, s); } catch (e) {}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+const $ = (id) => document.getElementById(id);
+const sections = [...new Set(QUESTIONS.map(q => q.section))];
+sections.forEach(s => { const o = document.createElement("option"); o.value = s; o.textContent = s; $("filter").appendChild(o); });
+
+function revealed(i) { return state.mode === "practice" ? state.answers[i] !== undefined : state.submitted; }
+
+function render() {
+  $("mode-practice").setAttribute("aria-pressed", state.mode === "practice");
+  $("mode-exam").setAttribute("aria-pressed", state.mode === "exam");
+  $("filter").value = state.filter;
+  const list = $("qs"); list.innerHTML = "";
+  QUESTIONS.forEach((q, i) => {
+    if (state.filter !== "all" && q.section !== state.filter) return;
+    const li = document.createElement("li"); li.className = "q"; li.id = "q" + (i + 1);
+    const chosen = state.answers[i]; const show = revealed(i);
+    const head = document.createElement("div"); head.className = "q-head";
+    head.innerHTML = `<span class="q-num">Q${i + 1}</span><span class="q-sec"></span>`;
+    head.querySelector(".q-sec").textContent = q.section;
+    if (show && chosen !== undefined) {
+      const m = document.createElement("span");
+      const ok = chosen === q.answer;
+      m.className = "q-mark " + (ok ? "right" : "wrong"); m.textContent = ok ? "Correct" : "Incorrect";
+      head.appendChild(m);
+    } else if (show) {
+      const m = document.createElement("span"); m.className = "q-mark wrong"; m.textContent = "Not answered"; head.appendChild(m);
+    }
+    const stem = document.createElement("p"); stem.className = "stem"; stem.textContent = q.stem;
+    const opts = document.createElement("div"); opts.className = "opts";
+    "ABCDE".split("").forEach((L, k) => {
+      const b = document.createElement("button"); b.type = "button"; b.className = "opt"; b.id = `q${i + 1}-${L}`;
+      b.innerHTML = `<span class="L">${L}</span><span></span>`; b.lastChild.textContent = q.options[k];
+      b.setAttribute("aria-pressed", chosen === L);
+      if (show) {
+        b.disabled = true;
+        if (L === q.answer) b.classList.add("is-right");
+        else if (L === chosen) b.classList.add("is-wrong");
+      }
+      b.addEventListener("click", () => { state.answers[i] = L; save(); render(); });
+      opts.appendChild(b);
+    });
+    li.append(head, stem, opts);
+    if (show) {
+      const ex = document.createElement("div"); ex.className = "explain";
+      ex.innerHTML = `<strong>Answer ${q.answer}.</strong> `; ex.append(document.createTextNode(q.explanation));
+      li.appendChild(ex);
+    }
+    list.appendChild(li);
+  });
+  const answered = Object.keys(state.answers).length;
+  const correct = Object.entries(state.answers).filter(([i, L]) => QUESTIONS[i].answer === L).length;
+  const showScore = state.mode === "practice" || state.submitted;
+  $("answered").textContent = answered;
+  $("correct").textContent = showScore ? correct : "–";
+  $("bar").style.width = (answered / QUESTIONS.length * 100) + "%";
+  $("submit").hidden = state.mode !== "exam" || state.submitted;
+  $("exam-hint").hidden = state.mode !== "exam" || state.submitted;
+  $("submit").disabled = answered === 0;
+  const done = (state.mode === "practice" && answered === QUESTIONS.length) || (state.mode === "exam" && state.submitted);
+  $("summary").hidden = !done;
+  if (done) {
+    $("summary-title").textContent = `You scored ${correct} out of ${QUESTIONS.length}`;
+    const ul = $("summary-list"); ul.innerHTML = "";
+    const missed = QUESTIONS.map((q, i) => ({ q, i })).filter(({ q, i }) => state.answers[i] !== q.answer);
+    if (!missed.length) { const li = document.createElement("li"); li.textContent = "Every answer correct."; ul.appendChild(li); }
+    const bySec = {};
+    missed.forEach(({ q, i }) => { (bySec[q.section] = bySec[q.section] || []).push("Q" + (i + 1)); });
+    Object.entries(bySec).forEach(([s, qs]) => { const li = document.createElement("li"); li.textContent = `Revisit ${s}: ${qs.join(", ")}`; ul.appendChild(li); });
+  }
+}
+
+$("mode-practice").addEventListener("click", () => { state.mode = "practice"; save(); render(); });
+$("mode-exam").addEventListener("click", () => { state.mode = "exam"; state.submitted = false; save(); render(); });
+$("filter").addEventListener("change", (e) => { state.filter = e.target.value; save(); render(); });
+$("submit").addEventListener("click", () => { state.submitted = true; save(); render(); window.scrollTo({ top: 0, behavior: "smooth" }); });
+$("reset").addEventListener("click", () => { state.answers = {}; state.submitted = false; save(); render(); window.scrollTo({ top: 0 }); });
+render();
+</script>
+
+</body>
+</html>
