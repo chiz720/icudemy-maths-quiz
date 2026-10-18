@@ -152,6 +152,17 @@ const $ = (id) => document.getElementById(id);
 const sections = [...new Set(QUESTIONS.map(q => q.section))];
 sections.forEach(s => { const o = document.createElement("option"); o.value = s; o.textContent = s; $("filter").appendChild(o); });
 
+// Deep links from YouTube: #v3 opens the questions for video 3, #all shows everything
+function applyHash() {
+  const m = (location.hash || "").match(/^#v(\d{1,2})$/i);
+  if (m) {
+    const sec = sections.find(s => s.startsWith("V" + parseInt(m[1], 10) + " "));
+    if (sec) { state.filter = sec; save(); }
+  } else if (location.hash === "#all") { state.filter = "all"; save(); }
+}
+applyHash();
+window.addEventListener("hashchange", () => { applyHash(); render(); window.scrollTo({ top: 0 }); });
+
 function revealed(i) { return state.mode === "practice" ? state.answers[i] !== undefined : state.submitted; }
 
 function render() {
