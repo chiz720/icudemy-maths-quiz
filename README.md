@@ -1,6 +1,6 @@
 # ICUDemy — The Maths of Anaesthesia & Critical Care: SBA quiz
 
-Twenty FRCA-style single-best-answer questions covering the 13-part ICUDemy maths series.
+Twenty single-best-answer questions covering the 13-part ICUDemy maths series.
 
 - **Practice mode** marks each answer immediately with an explanation.
 - **Exam mode** marks everything on submit.
