@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="author" content="Idris Chikophe">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Twenty FRCA-style single-best-answer questions on the ICUDemy series The Maths of Anaesthesia & Critical Care.">
 <title>Maths of Anaesthesia SBA</title>
@@ -50,6 +51,9 @@ header.masthead { display: grid; gap: .4rem; margin-bottom: 1.5rem; }
 .eyebrow { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--teal); }
 h1 { font-family: var(--font-display); font-weight: 650; font-size: clamp(1.7rem, 4vw, 2.3rem); line-height: 1.15; margin: 0; text-wrap: balance; }
 .lede { color: var(--muted); margin: 0; max-width: 60ch; }
+.byline { display: flex; flex-wrap: wrap; gap: .15rem .6rem; align-items: baseline; margin: .1rem 0 .3rem; }
+.byline .author { font-family: var(--font-display); font-weight: 650; font-size: 1.05rem; color: var(--brand); }
+.byline .role { font-size: .92rem; color: var(--muted); }
 
 .strip { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: .75rem; border-bottom: 1px solid var(--rule); margin-bottom: 1.25rem; display: grid; gap: .6rem; }
 .strip-row { display: flex; flex-wrap: wrap; gap: .6rem 1rem; align-items: center; justify-content: space-between; }
@@ -101,6 +105,7 @@ footer { margin-top: 2rem; color: var(--muted); font-size: .85rem; }
   <header class="masthead">
     <div class="eyebrow">ICUDemy · FRCA-style single best answer</div>
     <h1>The Maths of Anaesthesia &amp; Critical Care</h1>
+    <p class="byline"><span class="author">Idris Chikophe</span><span class="role">Paediatric Cardiothoracic Anaesthesiologist</span></p>
     <p class="lede">Twenty questions across the thirteen videos: functions, slope, exponentials, logs, calculus, sigmoids, compartments, Bayes, feedback and hyperbolas. Choose one answer per question.</p>
   </header>
 
